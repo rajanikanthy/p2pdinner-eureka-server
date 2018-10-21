@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: p2pdinner-eureka-rc
+spec:
+  replicas: 2
+  selector:
+    app: p2pdinner-eureka
+  template:
+    metadata:
+      labels:
+        app: p2pdinner-eureka
+    spec:
+      containers:
+      - name: p2pdinner-eureka-service
+        image: rajanikanthy/p2pdinner-eureka:latest
+        ports:
+        - containerPort: 8080 
