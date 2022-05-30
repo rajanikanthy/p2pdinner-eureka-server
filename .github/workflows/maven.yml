@@ -15,14 +15,12 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      id: set-matrix
+    - id: set-matrix
       run: |
         JSON=$(cat ./metadata.json)
         echo "::set-output name=matrix::${JSON//'%'/'%25'}"
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
