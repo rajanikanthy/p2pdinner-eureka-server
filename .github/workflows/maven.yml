@@ -38,7 +38,7 @@ jobs:
       - run: ls -altr ${{ env.GITHUB_WORKSPACE }}
       - id: set-matrix
         run: |
-          JSON=$(cat ./metadata.json)
+          JSON=$(cat metadata.json)
           echo "::set-output name=matrix::${JSON//'%'/'%25'}"
   package:
     runs-on: ubuntu-latest
