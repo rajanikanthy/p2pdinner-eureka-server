@@ -17,7 +17,7 @@ jobs:
     steps:
     - id: set-matrix
       run: |
-        JSON=$(cat ./metadata.json)
+        JSON=$(cat ${{ env:GITHUB_WORKSPACE }}/metadata.json)
         echo "::set-output name=matrix::${JSON//'%'/'%25'}"
   build:
     runs-on: ubuntu-latest
