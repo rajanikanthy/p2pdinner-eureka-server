@@ -15,6 +15,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+    - run: ls -altr $GITHUB_WORKSPACE/
     - id: set-matrix
       run: |
         JSON=$(cat $GITHUB_WORKSPACE/metadata.json)
