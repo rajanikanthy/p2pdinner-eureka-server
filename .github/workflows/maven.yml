@@ -32,7 +32,9 @@ jobs:
           name: deploy-artifact
           path: staging
       - run: ls -altr
-      - run: |
+      - name: Parse Json
+        id: set-matrix
+        run: |
          JSON=$(cat metadata.json)
          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
   package:
@@ -68,5 +70,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: registry.digitalocean.com/p2pdinner/config-server:${{ env.DOCKER_TAG }}
+          tags: registry.digitalocean.com/p2pdinner/${{ matrix.imageName }}:${{ env.DOCKER_TAG }}
 
