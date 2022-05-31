@@ -42,18 +42,20 @@ jobs:
           name: deploy-artifact
       - name: Echo files in deploy folder
         run: ls -altr ${{steps.download.outputs.download-path}}
-      - name: read json
-        id: read_json
+      - name: read image name
+        id: read_image_name
         uses: MegaPiggy/json-reader-action@v1.0.0
         with:
           path: metadata.json
           property: "imageName"
-      - name: Set docker tag
-        run: echo "DOCKER_TAG=$(date +%s)" >> $GITHUB_ENV
-      - name: Output docker tag
-        run: echo ${{ env.DOCKER_TAG }}
+      - name: read tag
+        id: read_tag
+        uses: MegaPiggy/json-reader-action@v1.0.0
+        with:
+          path: metadata.json
+          property: "tag"
       - name: Build the Docker image
-        run: cd ${{steps.download.outputs.download-path}} && docker build . --file Dockerfile --tag registry.digitalocean.com/p2pdinner/${{ steps.read_json.outputs.value }}:${{ env.DOCKER_TAG }}
+        run: cd ${{steps.download.outputs.download-path}} && docker build . --file Dockerfile --tag registry.digitalocean.com/p2pdinner/${{ steps.read_image_name.outputs.value }}:${{ steps.read_tag.outputs.value }}
       - name: Docker login
         uses: docker/login-action@v2
         with:
@@ -66,5 +68,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: registry.digitalocean.com/p2pdinner/${{ steps.read_json.outputs.value }}:${{ env.DOCKER_TAG }}
+          tags: registry.digitalocean.com/p2pdinner/${{ steps.read_image_name.outputs.value }}:${{ steps.read_tag.outputs.value }}
 
